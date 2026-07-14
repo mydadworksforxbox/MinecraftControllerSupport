@@ -15,6 +15,12 @@ public final class ControllerBindings {
         return Math.copySign(value * value, value);
     }
 
+    /** Cubic response curve so small deflections give fine GUI cursor control. */
+    public static float pointerAxis(ControllerState state, int index) {
+        float value = applyDeadzone(state.getAxis(index), (float) ControllerConfig.cameraDeadzone);
+        return value * value * value;
+    }
+
     public static float leftTrigger(ControllerState state) {
         int index = ControllerConfig.mapping.sharedTriggerAxis;
         return index < 0 ? 0.0F : Math.max(0.0F, -state.getAxis(index));

@@ -9,3 +9,4 @@ run/
 .settings/
 hs_err_pid*
 .agents
+.claude

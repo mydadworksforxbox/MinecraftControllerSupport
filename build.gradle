@@ -13,6 +13,10 @@ buildscript {
 
 apply plugin: 'net.minecraftforge.gradle'
 
+configurations {
+    shade
+}
+
 version = mod_version
 group = mod_group
 archivesBaseName = mod_id
@@ -45,6 +49,17 @@ dependencies {
         force = true
     }
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    shade 'net.java.dev.jna:jna:4.4.0'
+    implementation configurations.shade
+}
+
+jar {
+    from {
+        configurations.shade.collect { dependency ->
+            dependency.isDirectory() ? dependency : zipTree(dependency)
+        }
+    }
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
 }
 
 tasks.matching { it.name == 'runClient' || it.name == 'runServer' }.all {
